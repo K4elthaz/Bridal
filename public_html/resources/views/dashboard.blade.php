@@ -107,6 +107,7 @@
     </script> --}}
 
     <script type="text/javascript">
+
         var ctx11 = document.getElementById("chart-sale").getContext("2d");
         var gradientStroke1 = ctx11.createLinearGradient(0, 230, 0, 50);
 
@@ -120,7 +121,7 @@
         gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
         gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
 
-        new Chart(ctx11, {
+        var myChart = new Chart(ctx11, {
             type: "line",
             data: {
                 labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -196,6 +197,32 @@
                 },
             },
         });
+        var saleData = @json($sale);
+        console.log(saleData);
+        
+        var originalLabels = myChart.data.labels;
+        var originalData = myChart.data.datasets[0].data;
+        
+        document.getElementById('dateFilter').addEventListener('change', function() {
+            if (this.value) {
+                var selectedDate = new Date(this.value);
+                var daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1, 0).getDate();
+                var labels = Array.from({length: daysInMonth}, (_, i) => i + 1);
+        
+                // Calculate the average sales per day
+                var averageSalesPerDay = saleData[selectedDate.getMonth()] / daysInMonth;
+        
+                // Update the data as well as the labels
+                myChart.data.labels = labels;
+                myChart.data.datasets[0].data = Array(daysInMonth).fill(averageSalesPerDay);
+            } else {
+                // If the input is cleared, restore the original labels and data
+                myChart.data.labels = originalLabels;
+                myChart.data.datasets[0].data = originalData;
+            }
+        
+            myChart.update();
+        });
 
     </script>
 
@@ -213,7 +240,7 @@
         gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
         gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
 
-        new Chart(ctx22, {
+        var mychart2 = new Chart(ctx22, {
             type: "line",
             data: {
                 labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -290,6 +317,33 @@
             },
         });
 
+        var rentData = @json($rent);
+        
+            var originalLabels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var originalData = rentData;
+        
+            document.getElementById('rentDateFilter').addEventListener('change', function() {
+                if (this.value) {
+                    var selectedDate = new Date(this.value);
+                    var daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1, 0).getDate();
+                    var labels = Array.from({length: daysInMonth}, (_, i) => i + 1);
+
+                    // Calculate the average sales per day
+                    var averageSalesPerDay = rentData[selectedDate.getMonth()] / daysInMonth;
+
+                    // Update the data as well as the labels
+                    mychart2.data.labels = labels;
+                    mychart2.data.datasets[0].data = Array(daysInMonth).fill(averageSalesPerDay);
+                } else {
+                    // If the input is cleared, restore the original labels and data
+                    mychart2.data.labels = originalLabels;
+                    mychart2.data.datasets[0].data = originalData;
+                }
+
+                mychart2.update();
+            });
+        
+
     </script>
 
 
@@ -307,7 +361,7 @@
         gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
         gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
 
-        new Chart(ctx33, {
+        var myChart3 = new Chart(ctx33, {
             type: "line",
             data: {
                 labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -383,6 +437,32 @@
                 },
             },
         });
+
+        var websiteVisitorsData = @json($website_visitors);
+        var originalLabels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var originalData = websiteVisitorsData;
+
+        document.getElementById('websiteDateFilter').addEventListener('change', function() {
+        if (this.value) {
+            var selectedDate = new Date(this.value);
+            console.log(selectedDate);
+            var daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1, 0).getDate();
+            var labels = Array.from({length: daysInMonth}, (_, i) => i + 1);
+
+            // Calculate the average visitors per day
+            var averageVisitorsPerDay = Math.round(websiteVisitorsData[selectedDate.getMonth()] / daysInMonth);
+
+            // Update the data as well as the labels
+            myChart3.data.labels = labels;
+            myChart3.data.datasets[0].data = Array(daysInMonth).fill(averageVisitorsPerDay);
+        } else {
+            // If the input is cleared, restore the original labels and data
+            myChart3.data.labels = originalLabels;
+            myChart3.data.datasets[0].data = originalData;
+        }
+
+        myChart3.update();
+    });
 
     </script>
 @endsection
@@ -485,6 +565,7 @@
         <div class="col-lg-6 mb-3">
             <div class="card z-index-2">
                 <div class="card-header pb-0">
+                <input type="month" id="dateFilter" name="dateFilter">
                     <h6>Annual Sales Summary ({{ date('Y') }})</h6>
                     <p class="text-sm">
                     </p>
@@ -500,6 +581,7 @@
         <div class="col-lg-6 mb-3">
             <div class="card z-index-2">
                 <div class="card-header pb-0">
+                <input type="month" id="rentDateFilter" name="dateFilter">
                     <h6>Annual Rent Summary ({{ date('Y') }})</h6>
                     <p class="text-sm">
                     </p>
@@ -515,6 +597,7 @@
         <div class="col-lg-12">
             <div class="card z-index-2">
                 <div class="card-header pb-0">
+                <input type="month" id="websiteDateFilter" name="websiteDateFilter">
                     <h6>Website Visitors ({{ date('Y') }})</h6>
                     <p class="text-sm">
                     </p>
