@@ -1,0 +1,44 @@
+
+/* Mobile Table */
+@media screen and (max-width: 600px) {
+    .table thead{
+        display: none;
+    }
+    .table, .table tbody. .table tr, .table td{
+        display: block;
+        width: 100%;
+        text-decoration: none;
+
+    }
+    table td {
+        display: flex;
+    }
+    .table tr{
+        margin-bottom: 15px;
+    }
+    .table tbody tr td.with-label{
+        text-align: right;
+        position: relative;
+        padding-left: 30%;
+        border: none !important;
+    }
+    .table td.with-label:before{
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width:25%;
+        padding-left: 15px;
+        font-size: 10px;
+        
+    }
+    tr:nth-child(odd) {
+        background-color: #f2f2f2;
+    }
+    .action{
+        display: block;
+        margin: auto;
+    }
+}
+
+
+

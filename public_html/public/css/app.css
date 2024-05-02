@@ -1,0 +1,44 @@
+.close{
+    color:  white;
+    float: right;
+    font-size: .9rem;
+    font-weight: bold;
+}
+
+.full-width{
+    width: 100% !important;
+}
+
+.select2-selection--multiple{
+    overflow: hidden !important;
+    height: auto !important;
+}
+
+.dataTables_info {
+    font-size: 11pt
+}
+
+td {
+    font-size: 0.75rem !important;
+    word-wrap: break-word !important;
+    word-break: break-word;
+    vertical-align: top;
+    white-space: normal !important;
+}
+
+.font-18 {
+    font-size: 18pt !important;
+}
+
+.bg-pink {
+    background-image: linear-gradient(340deg,  RGB(200, 80, 110), rgb(254,127,155)) !important;
+    /* background: rgb(254,127,155); */
+}
+
+.bg-black {
+    background: #141727 !important;
+}
+
+.f-black {
+    color: #2a2a2a !important;
+}
