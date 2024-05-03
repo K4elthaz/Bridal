@@ -507,7 +507,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="dateForm" method="GET" action="{{ route('dashboard.index') }}">
+                        <form id="dateForm" method="GET" action="/dashboard">
                             <div class="form-group">
                                 <label for="selected_date_sales">Select Date</label>
                                 <input type="date" id="selected_date_sales" name="selected_date_sales" class="form-control">
@@ -553,7 +553,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="dateForm" method="GET" action="{{ route('dashboard.index') }}">
+                        <form id="dateForm" method="GET" action="/dashboard">
                             <div class="form-group">
                                 <label for="selected_date_rentals">Select Date</label>
                                 <input type="date" id="selected_date_rentals" name="selected_date_rentals" class="form-control">
@@ -599,7 +599,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="dateForm" method="GET" action="{{ route('dashboard.index') }}">
+                        <form id="dateForm" method="GET" action="/dashboard">
                             <div class="form-group">
                                 <label for="selected_date_customers">Select Date</label>
                                 <input type="date" id="selected_date_customers" name="selected_date_customers" class="form-control">
@@ -645,7 +645,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="dateForm" method="GET" action="{{ route('dashboard.index') }}">
+                        <form id="dateForm" method="GET"  action="/dashboard">
                             <div class="form-group">
                                 <label for="selected_date_out_rentals">Select Date</label>
                                 <input type="date" id="selected_date_out_rentals" name="selected_date_out_rentals" class="form-control">
