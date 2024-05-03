@@ -486,10 +486,34 @@
                             </div>
                         </div>
                         <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-pink shadow text-center border-radius-md">
-                                <i class="ni ni-money-coins text-lg opacity-10"></i>
+                            <a href="#" data-toggle="modal" data-target="#dateModalSales">
+                                <div class="icon icon-shape bg-pink shadow text-center border-radius-md">
+                                    <i class="ni ni-calendar-grid-58 text-lg opacity-10"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="dateModalSales" tabindex="-1" aria-labelledby="dateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="dateModalLabel">Filter Sales</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="dateForm" method="GET" action="{{ route('dashboard.index') }}">
+                            <div class="form-group">
+                                <label for="selected_date_sales">Select Date</label>
+                                <input type="date" id="selected_date_sales" name="selected_date_sales" class="form-control">
                             </div>
-                        </div>  
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -508,10 +532,34 @@
                             </div>
                         </div>
                         <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-pink shadow text-center border-radius-md">
-                                <i class="fa fa-tshirt text-lg opacity-10"></i>
+                            <a href="#" data-toggle="modal" data-target="#dateModalRental">
+                                <div class="icon icon-shape bg-pink shadow text-center border-radius-md">
+                                    <i class="ni ni-calendar-grid-58 text-lg opacity-10"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="dateModalRental" tabindex="-1" aria-labelledby="dateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="dateModalLabel">Filter Rentals</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="dateForm" method="GET" action="{{ route('dashboard.index') }}">
+                            <div class="form-group">
+                                <label for="selected_date_rentals">Select Date</label>
+                                <input type="date" id="selected_date_rentals" name="selected_date_rentals" class="form-control">
                             </div>
-                        </div>  
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -530,10 +578,34 @@
                             </div>
                         </div>
                         <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-pink shadow text-center border-radius-md">
-                                <i class="fa fa-users text-lg opacity-10"></i>
+                            <a href="#" data-toggle="modal" data-target="#dateModalCustomers">
+                                <div class="icon icon-shape bg-pink shadow text-center border-radius-md">
+                                    <i class="ni ni-calendar-grid-58 text-lg opacity-10"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="dateModalCustomers" tabindex="-1" aria-labelledby="dateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="dateModalLabel">Filter Customers</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="dateForm" method="GET" action="{{ route('dashboard.index') }}">
+                            <div class="form-group">
+                                <label for="selected_date_customers">Select Date</label>
+                                <input type="date" id="selected_date_customers" name="selected_date_customers" class="form-control">
                             </div>
-                        </div>  
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -552,10 +624,34 @@
                             </div>
                         </div>
                         <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-pink shadow text-center border-radius-md">
-                                <i class="ni ni-cart text-lg opacity-10"></i>
+                            <a href="#" data-toggle="modal" data-target="#dateModalOutRentals">
+                                <div class="icon icon-shape bg-pink shadow text-center border-radius-md">
+                                    <i class="ni ni-calendar-grid-58 text-lg opacity-10"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="dateModalOutRentals" tabindex="-1" aria-labelledby="dateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="dateModalLabel">Filter Out For Rent</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="dateForm" method="GET" action="{{ route('dashboard.index') }}">
+                            <div class="form-group">
+                                <label for="selected_date_out_rentals">Select Date</label>
+                                <input type="date" id="selected_date_out_rentals" name="selected_date_out_rentals" class="form-control">
                             </div>
-                        </div>  
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>

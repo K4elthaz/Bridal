@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $page = [
             'name' =>  'Dashboard',
@@ -20,6 +20,29 @@ class DashboardController extends Controller
             'crumb' =>  array('Dashboard' => '')
         ];
 
+        $selectedDateSales  = $request->input('selected_date_sales');
+        $selectedDateRentals  = $request->input('selected_date_rentals');
+        $selectedDateCustomers  = $request->input('selected_date_customers');
+        $selectedDateOutRentals  = $request->input('selected_date_out_rentals');
+
+
+        if (!$selectedDateSales) {
+            $selectedDateSales = Carbon::now('Asia/Manila')->toDateString();
+        }
+
+        if (!$selectedDateRentals) {
+            $selectedDateRentals = Carbon::now('Asia/Manila')->toDateString();
+        }
+
+        if (!$selectedDateCustomers) {
+            $selectedDateCustomers = Carbon::now('Asia/Manila')->toDateString();
+        }
+
+        if (!$selectedDateOutRentals) {
+            $selectedDateOutRentals = Carbon::now('Asia/Manila')->toDateString();
+        }
+        
+        
         $months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
         $sale = [];
         $rent = [];
@@ -111,7 +134,7 @@ class DashboardController extends Controller
                 ->where('tbl_transaction_products.status', TransactionProduct::PAID);
             });
         })
-        ->where('tbl_transactions.transaction_date', Carbon::now('Asia/Manila')->format('Y-m-d'))
+        ->whereDate('tbl_transactions.transaction_date', $selectedDateSales)
         ->get();
 
         $todays_sales = 0;
@@ -138,7 +161,7 @@ class DashboardController extends Controller
         ->whereIn('tbl_transaction_products.status', [TransactionProduct::RETURNED, TransactionProduct::RETURNEDWITHDAMAGE, TransactionProduct::ONGOING])
 
         ->whereNull('tbl_transactions.deleted_at')
-        ->where('tbl_transactions.transaction_date', Carbon::now('Asia/Manila')->format('Y-m-d'))
+        ->where('tbl_transactions.transaction_date', $selectedDateRentals)
         ->get();
 
         $todays_rent = 0;
@@ -163,12 +186,13 @@ class DashboardController extends Controller
             }
         }
 
-        $customers = Customer::count();
+        $customers = Customer::whereDate('created_at', $selectedDateCustomers)->count();
 
         $out_for_rent = TransactionProduct::leftJoin('tbl_transactions', 'tbl_transactions.id', 'tbl_transaction_products.transaction_id')
         ->where('tbl_transactions.status', '<>', Transaction::COMPLETED)
         ->whereNull('tbl_transactions.deleted_at')
         ->where('tbl_transaction_products.type', TransactionProduct::RENT)
+        ->whereDate('tbl_transactions.transaction_date', $selectedDateOutRentals)
         ->count('tbl_transaction_products.id');
         
         $website_visitors = [];

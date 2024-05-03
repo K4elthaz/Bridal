@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['permissions:ADMIN,CASHIER'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index']);
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     });
 
 
