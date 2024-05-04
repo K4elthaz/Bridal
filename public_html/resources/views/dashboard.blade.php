@@ -197,32 +197,42 @@
                 },
             },
         });
+
         var saleData = @json($sale);
-        console.log(saleData);
-        
+        var day_sale = @json($day_sale);
+
+        console.log("saleData " + JSON.stringify(day_sale));        
         var originalLabels = myChart.data.labels;
         var originalData = myChart.data.datasets[0].data;
         
         document.getElementById('dateFilter').addEventListener('change', function() {
-            if (this.value) {
-                var selectedDate = new Date(this.value);
-                var daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1, 0).getDate();
-                var labels = Array.from({length: daysInMonth}, (_, i) => i + 1);
-        
-                // Calculate the average sales per day
-                var averageSalesPerDay = saleData[selectedDate.getMonth()] / daysInMonth;
-        
-                // Update the data as well as the labels
-                myChart.data.labels = labels;
-                myChart.data.datasets[0].data = Array(daysInMonth).fill(averageSalesPerDay);
-            } else {
-                // If the input is cleared, restore the original labels and data
-                myChart.data.labels = originalLabels;
-                myChart.data.datasets[0].data = originalData;
+    if (this.value) {
+        var selectedDate = new Date(this.value);
+        var daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1, 0).getDate();
+        var labels = Array.from({length: daysInMonth}, (_, i) => i + 1);
+
+        // Initialize an array to hold the sales for each day
+        var salesPerDay = Array(daysInMonth).fill(0);
+
+        // Process the day_sale data to get the sales for each day
+        for (var date in day_sale) {
+            var transactionDate = new Date(date);
+            if (transactionDate.getFullYear() === selectedDate.getFullYear() && transactionDate.getMonth() === selectedDate.getMonth()) {
+                salesPerDay[transactionDate.getDate() - 1] = day_sale[date];
             }
-        
-            myChart.update();
-        });
+        }
+
+        // Update the data as well as the labels
+        myChart.data.labels = labels;
+        myChart.data.datasets[0].data = salesPerDay;
+    } else {
+        // If the input is cleared, restore the original labels and data
+        myChart.data.labels = originalLabels;
+        myChart.data.datasets[0].data = originalData;
+    }
+
+    myChart.update();
+});
 
     </script>
 
@@ -246,7 +256,7 @@
                 labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
                 datasets: [
                     {
-                        label: "Visitors",
+                        label: "Rent",
                         tension: 0.4,
                         borderWidth: 0,
                         pointRadius: 0,
@@ -317,31 +327,42 @@
             },
         });
 
+        var originalLabels2 = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
         var rentData = @json($rent);
-        
-            var originalLabels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            var originalData = rentData;
+        const originalData2 = rentData;
+        var day_rent = @json($day_rent);
+
+        console.log("rentData " + rentData);
         
             document.getElementById('rentDateFilter').addEventListener('change', function() {
-                if (this.value) {
-                    var selectedDate = new Date(this.value);
-                    var daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1, 0).getDate();
-                    var labels = Array.from({length: daysInMonth}, (_, i) => i + 1);
+    if (this.value) {
+        var selectedDate = new Date(this.value);
+        var daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1, 0).getDate();
+        var labels = Array.from({length: daysInMonth}, (_, i) => i + 1);
 
-                    // Calculate the average sales per day
-                    var averageSalesPerDay = rentData[selectedDate.getMonth()] / daysInMonth;
+        // Initialize an array to hold the rent for each day
+        var rentsPerDay = Array(daysInMonth).fill(0);
 
-                    // Update the data as well as the labels
-                    mychart2.data.labels = labels;
-                    mychart2.data.datasets[0].data = Array(daysInMonth).fill(averageSalesPerDay);
-                } else {
-                    // If the input is cleared, restore the original labels and data
-                    mychart2.data.labels = originalLabels;
-                    mychart2.data.datasets[0].data = originalData;
-                }
+        // Process the day_rent data to get the rent for each day
+        for (var date in day_rent) {
+            var transactionDate = new Date(date);
+            if (transactionDate.getFullYear() === selectedDate.getFullYear() && transactionDate.getMonth() === selectedDate.getMonth()) {
+                rentsPerDay[transactionDate.getDate() - 1] = day_rent[date];
+            }
+        }
 
-                mychart2.update();
-            });
+        // Update the data as well as the labels
+        mychart2.data.labels = labels;
+        mychart2.data.datasets[0].data = rentsPerDay;
+    } else {
+        // If the input is cleared, restore the original labels and data
+        mychart2.data.labels = originalLabels2;
+        mychart2.data.datasets[0].data = originalData2;
+    }
+
+    mychart2.update();
+});
         
 
     </script>
@@ -439,13 +460,12 @@
         });
 
         var websiteVisitorsData = @json($website_visitors);
-        var originalLabels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        var originalData = websiteVisitorsData;
+        const originalLabels3 = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const originalData3 = websiteVisitorsData;
 
         document.getElementById('websiteDateFilter').addEventListener('change', function() {
         if (this.value) {
             var selectedDate = new Date(this.value);
-            console.log(selectedDate);
             var daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1, 0).getDate();
             var labels = Array.from({length: daysInMonth}, (_, i) => i + 1);
 
@@ -457,8 +477,8 @@
             myChart3.data.datasets[0].data = Array(daysInMonth).fill(averageVisitorsPerDay);
         } else {
             // If the input is cleared, restore the original labels and data
-            myChart3.data.labels = originalLabels;
-            myChart3.data.datasets[0].data = originalData;
+            myChart3.data.labels = originalLabels3;
+            myChart3.data.datasets[0].data = originalData3;
         }
 
         myChart3.update();

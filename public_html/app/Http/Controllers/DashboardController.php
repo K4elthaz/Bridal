@@ -120,10 +120,12 @@ class DashboardController extends Controller
             $rent[] = $monthly_rent;
         }
 
+        $day_sale = [];
 
         $ts = TransactionProduct::select(
             'tbl_prices.sale_price',
-            'tbl_transaction_products.quantity'
+            'tbl_transaction_products.quantity',
+            'tbl_transactions.transaction_date'
         )
         ->leftJoin('tbl_transactions', 'tbl_transactions.id', 'tbl_transaction_products.transaction_id')
         ->leftJoin('tbl_prices', 'tbl_prices.id', 'tbl_transaction_products.price_id')
@@ -134,14 +136,19 @@ class DashboardController extends Controller
                 ->where('tbl_transaction_products.status', TransactionProduct::PAID);
             });
         })
-        ->whereDate('tbl_transactions.transaction_date', $selectedDateSales)
         ->get();
 
         $todays_sales = 0;
-
+        $day_sales = 0;
         foreach($ts as $s) {
             $todays_sales += ($s->sale_price * $s->quantity);
+            $day_sales += ($s->sale_price * $s->quantity);
+            // Use the transaction_date as the key
+            $day_sale[$s->transaction_date] = $day_sales;
+            $day_sales = 0;
         }
+
+        echo json_encode($day_sale);
 
         $tr = TransactionProduct::select(
             'tbl_prices.rent_price',
@@ -160,12 +167,11 @@ class DashboardController extends Controller
         ->where('tbl_transaction_products.type', TransactionProduct::RENT)
         ->whereIn('tbl_transaction_products.status', [TransactionProduct::RETURNED, TransactionProduct::RETURNEDWITHDAMAGE, TransactionProduct::ONGOING])
 
-        ->whereNull('tbl_transactions.deleted_at')
-        ->where('tbl_transactions.transaction_date', $selectedDateRentals)
         ->get();
 
         $todays_rent = 0;
-
+        $day_rent = [];
+        $day_rents = 0;
         foreach($tr as $r) {
 
             if($r->status == TransactionProduct::RETURNED || $r->status == TransactionProduct::RETURNEDWITHDAMAGE) {
@@ -173,17 +179,25 @@ class DashboardController extends Controller
                     $daysDifference = \Carbon\Carbon::createFromFormat('Y-m-d', $r->scheduled_return_date)->diffInDays(\Carbon\Carbon::createFromFormat('Y-m-d', $r->date_returned));
                     if($daysDifference > 0 ) {
                         $todays_rent += (TransactionProduct::ADDITIONAL * $daysDifference);
+                        $day_rents += (TransactionProduct::ADDITIONAL * $daysDifference);
                     }
                 }
             }
 
             if($r->status == TransactionProduct::RETURNED) {
                 $todays_rent += $r->rent_price;
+                $day_rents += $r->rent_price;
                 
             } else { // RETURNED WITH DAMAGE
                 $todays_rent += $r->rent_price;
                 $todays_rent += $r->damage_deposit;
+                $day_rents += $r->rent_price;
+                $day_rents += $r->damage_deposit;
             }
+            
+            // Use the transaction_date as the key
+            $day_rent[$r->transaction_date] = $day_rents;
+            $day_rents = 0;
         }
 
         $customers = Customer::whereDate('created_at', $selectedDateCustomers)->count();
@@ -206,6 +220,8 @@ class DashboardController extends Controller
             'page',
             'sale',
             'rent',
+            'day_rent',
+            'day_sale',
             'todays_sales',
             'todays_rent',
             'customers',
