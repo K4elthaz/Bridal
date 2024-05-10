@@ -396,7 +396,7 @@
                         borderWidth: 3,
                         backgroundColor: gradientStroke1,
                         fill: true,
-                        data: {{ json_encode($website_visitors) }},
+                        data: @json($website_visitors),
                         maxBarThickness: 6
 
                     },
@@ -460,29 +460,29 @@
         });
 
         var websiteVisitorsData = @json($website_visitors);
-        const originalLabels3 = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const originalData3 = websiteVisitorsData;
+const originalLabels3 = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const originalData3 = websiteVisitorsData['2024']; // Default to the data for 2024
 
-        document.getElementById('websiteDateFilter').addEventListener('change', function() {
-        if (this.value) {
-            var selectedDate = new Date(this.value);
-            var daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1, 0).getDate();
-            var labels = Array.from({length: daysInMonth}, (_, i) => i + 1);
+window.onload = function() {
+    const selectedYear = document.getElementById('websiteDateFilter').value = '2024';
+    myChart3.data.datasets[0].data = websiteVisitorsData[selectedYear];
+    myChart3.update();
+}
 
-            // Calculate the average visitors per day
-            var averageVisitorsPerDay = Math.round(websiteVisitorsData[selectedDate.getMonth()] / daysInMonth);
+document.getElementById('websiteDateFilter').addEventListener('change', function() {
+    if (this.value) {
+        var selectedYear = this.value;
 
-            // Update the data as well as the labels
-            myChart3.data.labels = labels;
-            myChart3.data.datasets[0].data = Array(daysInMonth).fill(averageVisitorsPerDay);
-        } else {
-            // If the input is cleared, restore the original labels and data
-            myChart3.data.labels = originalLabels3;
-            myChart3.data.datasets[0].data = originalData3;
-        }
+        // Update the data
+        myChart3.data.datasets[0].data = websiteVisitorsData[selectedYear];
+    } else {
+        // If the input is cleared, restore the original labels and data
+        myChart3.data.labels = originalLabels3;
+        myChart3.data.datasets[0].data = originalData3;
+    }
 
-        myChart3.update();
-    });
+    myChart3.update();
+});
 
     </script>
 @endsection
@@ -713,7 +713,11 @@
         <div class="col-lg-12">
             <div class="card z-index-2">
                 <div class="card-header pb-0">
-                <input type="month" id="websiteDateFilter" name="websiteDateFilter">
+                <select id="websiteDateFilter" name="websiteDateFilter">
+                    @for ($year = 2020; $year <= 2030; $year++)
+                        <option value="{{ $year }}" {{ $year == 2024 ? 'selected' : '' }}>{{ $year }}</option>
+                    @endfor
+                </select>
                     <h6>Website Visitors ({{ date('Y') }})</h6>
                     <p class="text-sm">
                     </p>
